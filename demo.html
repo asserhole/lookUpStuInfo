@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>animate</title>
+	<link rel="stylesheet" href="animate.css">
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style>
+		body{
+			background: url(1.jpg) no-repeat ;
+			background-size:auto;
+		}
+		.container h3{
+			color:#fff;
+			font-family: "微软雅黑";
+		}
+		.container:after{
+			content:'';
+			display: block;
+			position: fixed;
+			left: 0;
+			right: 0;
+			top:0;
+			bottom: 0;
+			z-index: -1;
+			background: rgba(0,0,0,0.5);
+			
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div class="container">
+			<h3 class="page-header text-center">学生信息查询系统</h3><br>
+			<div class="row">
+				<div class="col-sm-5 col-sm-offset-3">
+					<input ref="look" type="text" class="form-control" placeholder="请输入要查询的学生的姓名" autofocus>
+				</div>
+				<button @click="lookUp" class="btn btn-primary col-sm-1"><i class="glyphicon glyphicon-search"></i> 查询</button>
+			</div>
+			<br><br><br><br>
+			<transition-group enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
+				<div v-for="(val, i) in filterList" :key="i" v-show="show" class="animated panel panel-success col-sm-offset-3  col-sm-6">
+				  <div class="panel-heading row"><i class="glyphicon glyphicon-th-list"></i> 学生信息</div>
+				  <div class="panel-body">
+						<div class="form-horizontal">
+							<br>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">学号</label>
+								<div class="col-sm-9">
+									<input :value="val.num" type="text" class="form-control">
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">姓名</label>
+								<div class="col-sm-9">
+									<input :value="val.name" type="text" class="form-control">
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">性别</label>
+								<div class="col-sm-9">
+									<input :value="val.sex" type="text" class="form-control">
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">专业</label>
+								<div class="col-sm-9">
+									<input  :value="val.major" type="text" class="form-control">
+								</div>
+							</div>
+							<br>
+						</div>
+				  </div>
+				</div>
+			</transition-group>
+		</div>
+	</div>
+
+
+	<script src="vue.js"></script>
+	<script>
+	document.body.style.height = window.innerHeight + 'px';
+	new Vue({
+		el: '#app',
+		data: {
+			show: '',
+			list: [
+				{num: '1614301',name: '邓超',sex:'男',major:'机械设计制造及其自动化'},
+				{num: '1614302',name: '邓肯',sex:'男',major:'心理学'},
+				{num: '1614303',name: '陈奕迅',sex:'男',major:'建筑学'}
+			],
+			filterList: []
+		},
+		methods: {
+			lookUp(){
+				var arr = [];
+				this.show = this.$refs.look.value;
+				this.list.forEach(function  (val) {
+					if(val.name.indexOf(this.show) !== -1){
+						arr.push(val);
+					}
+				}.bind(this));
+
+				this.filterList = arr;
+			}
+		}
+
+	})
+	</script>
+</body>
+</html>
+
